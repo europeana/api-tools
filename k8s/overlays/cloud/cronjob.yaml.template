@@ -16,8 +16,8 @@ spec:
             fluentd/multiline: 'true'
         spec:
           containers:
-            - name: post-publication
-              image: europeana/post-publication
+            - name: post-publication-flush-logs
+              image: europeana/post-publication-flush-logs
               imagePullPolicy: Always
               command:
                 - java
