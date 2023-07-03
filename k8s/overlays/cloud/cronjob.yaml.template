@@ -1,0 +1,42 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: flush-logs-post-publication-job
+spec:
+  schedule: "${FLUSH_LOGS_CRON_SCHEDULE}"
+  suspend: ${SUSPEND_FLUSH_LOGS}
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: ${CRON_TTLS_AFTER_FINISHED}
+      template:
+        metadata:
+          annotations:
+            fluentd/include: '${COLLECT_LOGS}'
+            fluentd/multiline: 'true'
+        spec:
+          containers:
+            - name: post-publication
+              image: europeana/post-publication
+              imagePullPolicy: Always
+              command:
+                - java
+                - -jar
+                - /opt/app/flush-logs-api.jar
+              env:
+                - name: JAVA_OPTS
+                  value: "-javaagent:\"/usr/local/elastic-apm-agent.jar\"
+                          -Delastic.apm.application_packages=${ELASTIC_APP_PACKAGES}
+                          -Delastic.apm.server_urls=${ELASTIC_APM_SERVERS}
+                          -Delastic.apm.service_name=${APP_NAME}
+                          -Delastic.apm.enabled=${COLLECT_APM}
+                          -Delastic.apm.environment=${K8S_NAMESPACE}
+                          -XX:+UseParallelGC -XX:MaxRAMPercentage=75"
+              resources:
+                requests:
+                  memory: "${FLUSH_LOGS_MEMORY_REQUEST}M"
+                  cpu: "${FLUSH_LOGS_CPU_REQUEST}m"
+                limits:
+                  memory: "${FLUSH_LOGS_MEMORY_LIMIT}M"
+                  cpu: "${FLUSH_LOGS_CPU_LIMIT}m"
+          restartPolicy: Never
