@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,11 +24,17 @@ public class FlushLogsApp {
 
     private static final Logger LOG = LogManager.getLogger(FlushLogsApp.class);
 
-    public static void main(String[] args) throws IOException, URISyntaxException {
+    public static void main(String[] args) throws IOException {
         LOG.info("Starting FlushLogsApp..................");
-        Stream<Path> pathStream = Files.list(Paths.get(FlushLogsApp.class.getResource("/logs/").toURI()));
-        pathStream.forEach(FlushLogsApp::print);
-        pathStream.close();
+        try {
+            URI uri = FlushLogsApp.class.getResource("/logs/").toURI();
+            LOG.info("Uri {}", uri);
+            Stream<Path> pathStream = Files.list(Paths.get(uri));
+            pathStream.forEach(FlushLogsApp::print);
+            pathStream.close();
+        } catch (URISyntaxException e) {
+            LOG.error("Error creating uri path");
+        }
 
     }
 
