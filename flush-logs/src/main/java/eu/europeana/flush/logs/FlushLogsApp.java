@@ -52,7 +52,5 @@ public class FlushLogsApp {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 }
