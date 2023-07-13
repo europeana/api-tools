@@ -34,6 +34,7 @@ public class FlushLogsApp {
             pathStream.close();
         } catch (URISyntaxException e) {
             LOG.error("Error creating uri path");
+            System.exit(1);
         }
 
     }
