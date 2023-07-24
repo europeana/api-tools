@@ -51,7 +51,7 @@ public class FlushLogsApp {
                 pathStream.close();
             }
         } catch (URISyntaxException | IOException e) {
-            LOG.error("Error creating the uri or listing the files from /logs folder");
+            LOG.error("Error creating the uri or listing the files from /logs folder {}", e);
             System.exit(1); // exit the program at the end even if exception occurs
         }
     }
