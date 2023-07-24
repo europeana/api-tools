@@ -37,14 +37,14 @@ public class FlushLogsApp {
 
             if (uri.toString().contains("!")) {
                 final Map<String, String> env = new HashMap<>();
-                final String[] array = uri.toString().split("!");
-                final FileSystem fs = FileSystems.newFileSystem(URI.create(array[0] + array[1]), env);
-                final Path path = fs.getPath(array[2]);
-                LOG.info("path {}", path);
-                Stream<Path> pathStream = Files.list(Paths.get(uri));
+                //final String[] array = uri.toString().split("!");
+                //final FileSystem fs = FileSystems.newFileSystem(URI.create(array[0] + array[1]), env);
+               // final Path path = fs.getPath(array[2]);
+               // LOG.info("path {}", path);
+                Stream<Path> pathStream = Files.list(Paths.get("/opt/app/flush-logs-api.jar/BOOT-INF/classes/logs/"));
                 pathStream.forEach(FlushLogsApp::print);
                 pathStream.close();
-                fs.close();
+              //  fs.close();
             } else {
                 Stream<Path> pathStream = Files.list(Paths.get(uri));
                 pathStream.forEach(FlushLogsApp::print);
