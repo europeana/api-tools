@@ -11,10 +11,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -24,19 +24,36 @@ public class FlushLogsApp {
 
     private static final Logger LOG = LogManager.getLogger(FlushLogsApp.class);
 
-    public static void main(String[] args) throws IOException {
+    /**
+     *
+     * @param args
+     */
+    //Uri jar:file:/opt/app/flush-logs-api.jar!/BOOT-INF/classes!/logs/
+    public static void main(String[] args) {
         LOG.info("Starting FlushLogsApp..................");
         try {
             URI uri = FlushLogsApp.class.getResource("/logs/").toURI();
             LOG.info("Uri {}", uri);
-            Stream<Path> pathStream = Files.list(Paths.get(uri));
-            pathStream.forEach(FlushLogsApp::print);
-            pathStream.close();
-        } catch (URISyntaxException e) {
-            LOG.error("Error creating uri path");
-            System.exit(1);
-        }
 
+            if (uri.toString().contains("!")) {
+                final Map<String, String> env = new HashMap<>();
+                final String[] array = uri.toString().split("!");
+                final FileSystem fs = FileSystems.newFileSystem(URI.create(array[0]), env);
+                final Path path = fs.getPath(array[1]);
+                LOG.info("path {}", path);
+                Stream<Path> pathStream = Files.list(Paths.get(uri));
+                pathStream.forEach(FlushLogsApp::print);
+                pathStream.close();
+                fs.close();
+            } else {
+                Stream<Path> pathStream = Files.list(Paths.get(uri));
+                pathStream.forEach(FlushLogsApp::print);
+                pathStream.close();
+            }
+        } catch (URISyntaxException | IOException e) {
+            LOG.error("Error creating the uri or listing the files from /logs folder");
+            System.exit(1); // exit the program at the end even if exception occurs
+        }
     }
 
     public static void print(Path p) {
