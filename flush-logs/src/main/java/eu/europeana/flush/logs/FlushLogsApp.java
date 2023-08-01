@@ -49,24 +49,27 @@ public class FlushLogsApp {
 
     public static void print(Path p) {
         LOG.info( "{}", p);
-        try (ZipFile zipFile = new ZipFile(p.toString())) {
-            int numberOfFiles =0;
-            Enumeration<? extends ZipEntry> entries = zipFile.entries();
-            while (entries.hasMoreElements()) {
-                numberOfFiles++;
-                ZipEntry entry = entries.nextElement();
-                InputStream stream = zipFile.getInputStream(entry);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-                String nextLine;
-                while ((nextLine = reader.readLine()) != null) {
-                    System.out.println(nextLine);
+        // TODO remove later only for testing purpose, later change to .zip extension
+        if (StringUtils.contains(p.toString(),"test.zip" )) {
+            try (ZipFile zipFile = new ZipFile(p.toString())) {
+                int numberOfFiles = 0;
+                Enumeration<? extends ZipEntry> entries = zipFile.entries();
+                while (entries.hasMoreElements()) {
+                    numberOfFiles++;
+                    ZipEntry entry = entries.nextElement();
+                    InputStream stream = zipFile.getInputStream(entry);
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+                    String nextLine;
+                    while ((nextLine = reader.readLine()) != null) {
+                        System.out.println(nextLine);
+                    }
+                    stream.close();
+                    reader.close();
                 }
-                stream.close();
-                reader.close();
+                LOG.info("Flushed {} number of files for {}", numberOfFiles, StringUtils.substringAfterLast(zipFile.getName(), "/"));
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            LOG.info("Flushed {} number of files for {}",numberOfFiles, StringUtils.substringAfterLast(zipFile.getName(), "/"));
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }
