@@ -4,19 +4,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URISyntaxException;
+
 import java.nio.file.*;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -28,6 +23,11 @@ public class FlushLogsApp {
 
     /**
      *
+     * Pushes the Logs file on the Kubernetes Node
+     * Makes ure to provide the location as an argument if running in IDE or locally
+     *
+     * If the cronjob is running in kubernetes,
+     * make sure the command in the cronjob.yaml.template has the correct location
      * @param args
      */
     //Uri jar:file:/opt/app/flush-logs-api.jar!/BOOT-INF/classes!/logs/
