@@ -4,6 +4,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,9 +15,8 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.*;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -32,28 +34,17 @@ public class FlushLogsApp {
     public static void main(String[] args) {
         LOG.info("Starting FlushLogsApp..................");
         try {
-            URI uri = FlushLogsApp.class.getResource("/logs/").toURI();
-            LOG.info("Uri {}", uri);
-
-            if (uri.toString().contains("!")) {
-                final Map<String, String> env = new HashMap<>();
-                //final String[] array = uri.toString().split("!");
-                //final FileSystem fs = FileSystems.newFileSystem(URI.create(array[0] + array[1]), env);
-               // final Path path = fs.getPath(array[2]);
-               // LOG.info("path {}", path);
-                Stream<Path> pathStream = Files.list(Paths.get("/opt/app/flush-logs-api.jar/BOOT-INF/classes/logs/"));
-                pathStream.forEach(FlushLogsApp::print);
-                pathStream.close();
-              //  fs.close();
-            } else {
-                Stream<Path> pathStream = Files.list(Paths.get(uri));
+            if(args.length > 0) {
+                LOG.info("Running the application with arguments {}", args[0]);
+                Stream<Path> pathStream = Files.list(Paths.get(args[0]));
                 pathStream.forEach(FlushLogsApp::print);
                 pathStream.close();
             }
-        } catch (URISyntaxException | IOException e) {
-            LOG.error("Error creating the uri or listing the files from /logs folder {}", e);
+        } catch (IOException e) {
+            LOG.error("Files not present at {}", args[0], e);
             System.exit(1); // exit the program at the end even if exception occurs
         }
+        System.exit(1);
     }
 
     public static void print(Path p) {
@@ -73,7 +64,7 @@ public class FlushLogsApp {
                 stream.close();
                 reader.close();
             }
-            LOG.info("Flushed {} number of files for {}", StringUtils.substringAfterLast(zipFile.getName(), "/"), numberOfFiles);
+            LOG.info("Flushed {} number of files for {}",numberOfFiles, StringUtils.substringAfterLast(zipFile.getName(), "/"));
         } catch (IOException e) {
             e.printStackTrace();
         }

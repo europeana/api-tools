@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: flush-logs-post-publication-job
+spec:
+  schedule: "@hourly"
+  suspend:
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 120
+      template:
+        spec:
+          containers:
+            - name: post-publication-flush-logs
+              image: europeana/post-publication-flush-logs
+              imagePullPolicy: Always
+              command:
+                - java
+                - -jar
+                - /opt/app/flush-logs-api.jar
+                - /logs/location                           #location to the log folder
+          restartPolicy: Never
