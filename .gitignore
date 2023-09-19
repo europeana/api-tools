@@ -30,7 +30,7 @@ nbdist/
 **/*/*user.properties
 
 ## log files
-k8s/base/logs
+**/*/data
 
 
 # Temp files
