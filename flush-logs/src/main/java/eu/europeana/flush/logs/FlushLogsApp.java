@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+@SpringBootApplication
 public class FlushLogsApp {
 
     private static final Logger LOG = LogManager.getLogger(FlushLogsApp.class);
@@ -32,7 +33,7 @@ public class FlushLogsApp {
      */
 //    jar:file:/opt/app/flush-logs-api.jar!/BOOT-INF/classes!/data
     public static void main(String[] args) {
-            LOG.info("Starting FlushLogsApp.................." + args[0]);
+            LOG.info("Starting FlushLogsApp..................");
             try {
                 URI uri = (FlushLogsApp.class.getResource("/data").toURI());
                 LOG.info(uri.toString());
