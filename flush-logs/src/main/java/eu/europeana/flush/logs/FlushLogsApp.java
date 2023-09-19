@@ -34,13 +34,14 @@ public class FlushLogsApp {
     public static void main(String[] args) {
         LOG.info("Starting FlushLogsApp..................");
         try {
-            if(args.length > 0) {
+            if (args.length > 0) {
                 LOG.info("Running the application with arguments {}", args[0]);
-                Stream<Path> pathStream = Files.list(Paths.get(args[0]));
-                pathStream.forEach(FlushLogsApp::print);
-                pathStream.close();
+                print(Path.of(args[0]));
+                //Stream<Path> pathStream = Files.list(Paths.get(args[0]));
+//                pathStream.forEach(FlushLogsApp::print);
+//                pathStream.close();
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOG.error("Files not present at {}", args[0], e);
             System.exit(1); // exit the program at the end even if exception occurs
         }

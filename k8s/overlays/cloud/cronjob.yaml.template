@@ -23,7 +23,7 @@ spec:
                 - java
                 - -jar
                 - /opt/app/flush-logs-api.jar
-                - "${LOGS_FOLDER}"
+                - /opt/app/test.zip
               env:
                 - name: JAVA_OPTS
                   value: "-javaagent:\"/usr/local/elastic-apm-agent.jar\"
