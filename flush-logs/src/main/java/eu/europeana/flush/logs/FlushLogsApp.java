@@ -17,7 +17,6 @@ import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-@SpringBootApplication(scanBasePackages = "eu.europeana.flush.logs")
 public class FlushLogsApp {
 
     private static final Logger LOG = LogManager.getLogger(FlushLogsApp.class);
@@ -31,8 +30,8 @@ public class FlushLogsApp {
      * make sure the command in the cronjob.yaml.template has the correct location
      * @param args
      */
-    //Uri jar:file:/opt/app/flush-logs-api.jar!/BOOT-INF/classes!/logs/
-        public static void main(String[] args) {
+//    jar:file:/opt/app/flush-logs-api.jar!/BOOT-INF/classes!/data
+    public static void main(String[] args) {
             LOG.info("Starting FlushLogsApp..................");
             try {
                 URI uri = (FlushLogsApp.class.getResource("/data").toURI());
