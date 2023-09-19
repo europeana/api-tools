@@ -31,62 +31,23 @@ public class FlushLogsApp {
      * @param args
      */
     //Uri jar:file:/opt/app/flush-logs-api.jar!/BOOT-INF/classes!/logs/
-//        public static void main(String[] args) {
-//            LOG.info("Starting FlushLogsApp..................");
-//            try {
-//                Stream<Path> pathStream = Files.list(Paths.get(FlushLogsApp.class.getResource("test.zip").toURI()));
-//                pathStream.forEach(FlushLogsApp::print);
-//                pathStream.close();
-//            } catch (Exception e) {
-//                LOG.error("Files not present in resource", e);
-//                System.exit(1); // exit the program at the end even if exception occurs
-//            }
-//            System.exit(1);
-//        }
-    public static void main(final String[] args) throws IOException
-    {
-        //Creating instance to avoid static member methods
-        FlushLogsApp instance = new FlushLogsApp();
-
-        InputStream is = instance.getFileAsIOStream("application.2.log");
-        instance.printFileContent(is);
-
-//        is = instance.getFileAsIOStream("data/demo.txt");
-//        instance.printFileContent(is);
-    }
-
-    private InputStream getFileAsIOStream(final String fileName)
-    {
-        InputStream ioStream = this.getClass()
-                .getClassLoader()
-                .getResourceAsStream(fileName);
-
-        if (ioStream == null) {
-            throw new IllegalArgumentException(fileName + " is not found");
-        }
-        return ioStream;
-    }
-
-    private void printFileContent(InputStream is) throws IOException
-    {
-        try (InputStreamReader isr = new InputStreamReader(is);
-             BufferedReader br = new BufferedReader(isr);)
-        {
-            String line;
-            while ((line = br.readLine()) != null) {
-                System.out.println(line);
+        public static void main(String[] args) {
+            LOG.info("Starting FlushLogsApp..................");
+            try {
+                Stream<Path> pathStream = Files.list(Paths.get(FlushLogsApp.class.getResource("/data").toURI()));
+                pathStream.forEach(FlushLogsApp::print);
+                pathStream.close();
+            } catch (Exception e) {
+                LOG.error("Files not present in resource", e);
+                System.exit(1); // exit the program at the end even if exception occurs
             }
-            is.close();
+            System.exit(1);
         }
-    }
-
-
 
 
     public static void print(Path p) {
         LOG.info( "{}", p);
         // TODO remove later only for testing purpose, later change to .zip extension
-        if (StringUtils.contains(p.toString(),"test.zip" )) {
             try (ZipFile zipFile = new ZipFile(p.toString())) {
                 int numberOfFiles = 0;
                 Enumeration<? extends ZipEntry> entries = zipFile.entries();
@@ -108,4 +69,4 @@ public class FlushLogsApp {
             }
         }
     }
-}
+
