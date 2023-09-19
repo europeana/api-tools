@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import java.net.URI;
 import java.nio.file.*;
 import java.util.*;
 import java.util.stream.Stream;
@@ -34,7 +35,9 @@ public class FlushLogsApp {
         public static void main(String[] args) {
             LOG.info("Starting FlushLogsApp..................");
             try {
-                Stream<Path> pathStream = Files.list(Paths.get(FlushLogsApp.class.getResource("/data").toURI()));
+                URI uri = (FlushLogsApp.class.getResource("/data").toURI());
+                LOG.info(uri.toString());
+                Stream<Path> pathStream = Files.list(Paths.get(uri));
                 pathStream.forEach(FlushLogsApp::print);
                 pathStream.close();
             } catch (Exception e) {
