@@ -32,7 +32,7 @@ public class FlushLogsApp {
      */
 //    jar:file:/opt/app/flush-logs-api.jar!/BOOT-INF/classes!/data
     public static void main(String[] args) {
-            LOG.info("Starting FlushLogsApp..................");
+            LOG.info("Starting FlushLogsApp.................." + args[0]);
             try {
                 URI uri = (FlushLogsApp.class.getResource("/data").toURI());
                 LOG.info(uri.toString());
