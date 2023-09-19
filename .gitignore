@@ -29,6 +29,9 @@ nbdist/
 # Local user-specific configuration
 **/*/*user.properties
 
+## log files
+k8s/base/logs
+
 
 # Temp files
 *~
