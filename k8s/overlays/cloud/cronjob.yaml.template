@@ -23,7 +23,7 @@ spec:
                 - java
                 - -jar
                 - /opt/app/flush-logs-api.jar
-                - ../../base/logs/             #location to the log folder
+                - /opt/translationZipLogs/test.zip             #location to the log folder
               env:
                 - name: JAVA_OPTS
                   value: "-javaagent:\"/usr/local/elastic-apm-agent.jar\"
