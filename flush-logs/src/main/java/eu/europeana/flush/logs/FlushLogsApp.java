@@ -31,22 +31,57 @@ public class FlushLogsApp {
      * @param args
      */
     //Uri jar:file:/opt/app/flush-logs-api.jar!/BOOT-INF/classes!/logs/
-    public static void main(String[] args) {
-        LOG.info("Starting FlushLogsApp..................");
-        try {
-            if (args.length > 0) {
-                LOG.info("Running the application with arguments {}", args[0]);
-                print(Path.of(args[0]));
-                //Stream<Path> pathStream = Files.list(Paths.get(args[0]));
+//        public static void main(String[] args) {
+//            LOG.info("Starting FlushLogsApp..................");
+//            try {
+//                Stream<Path> pathStream = Files.list(Paths.get(FlushLogsApp.class.getResource("test.zip").toURI()));
 //                pathStream.forEach(FlushLogsApp::print);
 //                pathStream.close();
-            }
-        } catch (Exception e) {
-            LOG.error("Files not present at {}", args[0], e);
-            System.exit(1); // exit the program at the end even if exception occurs
-        }
-        System.exit(1);
+//            } catch (Exception e) {
+//                LOG.error("Files not present in resource", e);
+//                System.exit(1); // exit the program at the end even if exception occurs
+//            }
+//            System.exit(1);
+//        }
+    public static void main(final String[] args) throws IOException
+    {
+        //Creating instance to avoid static member methods
+        FlushLogsApp instance = new FlushLogsApp();
+
+        InputStream is = instance.getFileAsIOStream("application.2.log");
+        instance.printFileContent(is);
+
+//        is = instance.getFileAsIOStream("data/demo.txt");
+//        instance.printFileContent(is);
     }
+
+    private InputStream getFileAsIOStream(final String fileName)
+    {
+        InputStream ioStream = this.getClass()
+                .getClassLoader()
+                .getResourceAsStream(fileName);
+
+        if (ioStream == null) {
+            throw new IllegalArgumentException(fileName + " is not found");
+        }
+        return ioStream;
+    }
+
+    private void printFileContent(InputStream is) throws IOException
+    {
+        try (InputStreamReader isr = new InputStreamReader(is);
+             BufferedReader br = new BufferedReader(isr);)
+        {
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+            }
+            is.close();
+        }
+    }
+
+
+
 
     public static void print(Path p) {
         LOG.info( "{}", p);
