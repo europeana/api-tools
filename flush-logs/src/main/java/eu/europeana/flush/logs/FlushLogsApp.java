@@ -33,6 +33,7 @@ public class FlushLogsApp implements CommandLineRunner {
 
         zipFiles.stream().forEach(file -> {
             String url = flushLogsSettings.getServer() + file + ".zip";
+            LOG.info("Url {}", url);
             String content = readZipFileFromRemote(url);
             System.out.println(content);
         });
