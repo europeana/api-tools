@@ -39,4 +39,13 @@ spec:
                 limits:
                   memory: "${FLUSH_LOGS_MEMORY_LIMIT}M"
                   cpu: "${FLUSH_LOGS_CPU_LIMIT}m"
+              volumeMounts:
+                - name: flushlogs-properties
+                  mountPath: "/opt/app/config/flush.logs.user.properties"
+                  readOnly: true
+                  subPath: flush.logs.user.properties
+          volumes:
+            - name: flushlogs-properties
+              configMap:
+                name: flushlogs-config
           restartPolicy: Never

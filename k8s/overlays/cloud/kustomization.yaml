@@ -4,3 +4,8 @@ resources:
 
 commonLabels:
   app: post-publication-flush-logs
+
+  configMapGenerator:
+    - name: flushlogs-config
+      files:
+        - flush.logs.user.properties

@@ -29,8 +29,6 @@ nbdist/
 # Local user-specific configuration
 **/*/*user.properties
 
-## log files
-**/*/data
 
 
 # Temp files

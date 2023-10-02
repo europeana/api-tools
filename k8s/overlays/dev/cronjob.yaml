@@ -19,5 +19,4 @@ spec:
                 - java
                 - -jar
                 - /opt/app/flush-logs-api.jar
-                - /logs/location                           #location to the log folder
           restartPolicy: Never
