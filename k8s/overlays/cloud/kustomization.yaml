@@ -2,9 +2,6 @@ resources:
   - ../../base
   - cronjob.yaml
 
-commonLabels:
-  app: post-publication-flush-logs
-
   configMapGenerator:
     - name: flushlogs-config
       files:
