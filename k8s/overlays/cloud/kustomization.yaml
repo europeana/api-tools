@@ -2,7 +2,7 @@ resources:
   - ../../base
   - cronjob.yaml
 
-  configMapGenerator:
-    - name: flushlogs-config
-      files:
-        - flush.logs.user.properties
+configMapGenerator:
+  - name: flushlogs-config
+    files:
+      - flush.logs.user.properties
