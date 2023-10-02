@@ -6,7 +6,7 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @PropertySource("classpath:flush.logs.properties")
-@PropertySource(value = "classpath:flush.logs.user.properties", ignoreResourceNotFound = true)
+@PropertySource(value = "flush.logs.user.properties", ignoreResourceNotFound = true)
 public class FlushLogsSettings {
 
     @Value("${server.name}")

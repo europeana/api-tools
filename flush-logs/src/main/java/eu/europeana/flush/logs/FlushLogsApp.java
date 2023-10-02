@@ -30,6 +30,7 @@ public class FlushLogsApp implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         List<String> zipFiles = new ArrayList<>(Arrays.asList(flushLogsSettings.getFiles().split("\\s*,\\s*")));
+        LOG.info("zip files to be read {}", zipFiles);
 
         zipFiles.stream().forEach(file -> {
             String url = flushLogsSettings.getServer() + file + ".zip";
