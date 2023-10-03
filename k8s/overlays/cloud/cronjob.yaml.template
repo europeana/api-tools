@@ -26,8 +26,6 @@ spec:
               env:
                 - name: SPRING_CONFIG_ADDITIONAL_LOCATION
                   value: "file:/opt/app/config/flush.logs.user.properties"
-                - name: CATALINA_OPTS
-                  value: "-Xmx3024m -Xms2024m -XX:MaxPermSize=512m"
                 - name: JAVA_OPTS
                   value: "-javaagent:\"/usr/local/elastic-apm-agent.jar\"
                           -Delastic.apm.application_packages=${ELASTIC_APP_PACKAGES}
@@ -35,7 +33,8 @@ spec:
                           -Delastic.apm.service_name=${APP_NAME}
                           -Delastic.apm.enabled=${COLLECT_APM}
                           -Delastic.apm.environment=${K8S_NAMESPACE}
-                          -XX:+UseParallelGC -XX:MaxRAMPercentage=75"
+                          -XX:+UseParallelGC -XX:MaxRAMPercentage=75
+                          -Xmx3024m -Xms2024m -XX:MaxPermSize=512m"
               resources:
                 requests:
                   memory: "${FLUSH_LOGS_MEMORY_REQUEST}M"
