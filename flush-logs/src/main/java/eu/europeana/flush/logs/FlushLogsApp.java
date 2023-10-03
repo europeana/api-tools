@@ -11,6 +11,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 
 import java.io.*;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,21 +47,31 @@ public class FlushLogsApp implements CommandLineRunner {
 
     private static String readZipFileFromRemote(String remoteFileUrl) {
         StringBuilder sb = new StringBuilder();
-        try {
-            URL url = new URL(remoteFileUrl);
-            InputStream in = new BufferedInputStream(url.openStream(), 1024);
-            ZipInputStream stream = new ZipInputStream(in);
-            byte[] buffer = new byte[1024];
-            ZipEntry entry;
-            while ((entry = stream.getNextEntry()) != null) {
-                int read;
-                while ((read = stream.read(buffer, 0, 1024)) >= 0) {
-                    sb.append(new String(buffer, 0, read));
+        URL url = getUrl(remoteFileUrl);
+        if(url != null) {
+            try (InputStream in = new BufferedInputStream(url.openStream(), 1024)) {
+                ZipInputStream stream = new ZipInputStream(in);
+                byte[] buffer = new byte[1024];
+                ZipEntry entry;
+                while ((entry = stream.getNextEntry()) != null) {
+                    int read;
+                    while ((read = stream.read(buffer, 0, 1024)) >= 0) {
+                        sb.append(new String(buffer, 0, read));
+                    }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         return sb.toString();
+    }
+
+    private static URL getUrl(String remoteFileUrl) {
+        try {
+            return new URL(remoteFileUrl);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
