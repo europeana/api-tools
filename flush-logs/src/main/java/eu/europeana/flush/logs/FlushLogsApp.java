@@ -33,6 +33,19 @@ public class FlushLogsApp implements CommandLineRunner {
         List<String> zipFiles = new ArrayList<>(Arrays.asList(flushLogsSettings.getFiles().split("\\s*,\\s*")));
         LOG.info("zip files to be read {}", zipFiles);
 
+        // Get current size of heap in bytes
+        long heapSize = Runtime.getRuntime().totalMemory();
+
+        // Get maximum size of heap in bytes. The heap cannot grow beyond this size.// Any attempt will result in an OutOfMemoryException.
+        long heapMaxSize = Runtime.getRuntime().maxMemory();
+
+        // Get amount of free memory within the heap in bytes. This size will increase // after garbage collection and decrease as new objects are created.
+        long heapFreeSize = Runtime.getRuntime().freeMemory();
+
+        LOG.info("heapSize {}", heapSize);
+        LOG.info("heapMaxSize {}", heapMaxSize);
+        LOG.info("heapFreeSize {}", heapFreeSize);
+
         zipFiles.stream().forEach(file -> {
             String url = flushLogsSettings.getServer() + file + ".zip";
             LOG.info("Url {}", url);
