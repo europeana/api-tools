@@ -27,7 +27,7 @@ spec:
                 - name: SPRING_CONFIG_ADDITIONAL_LOCATION
                   value: "file:/opt/app/config/flush.logs.user.properties"
                 - name: CATALINA_OPTS
-                  value: "-Xmx1024m -Xms1024m -XX:MaxPermSize=512m"
+                  value: "-Xmx3024m -Xms2024m -XX:MaxPermSize=512m"
                 - name: JAVA_OPTS
                   value: "-javaagent:\"/usr/local/elastic-apm-agent.jar\"
                           -Delastic.apm.application_packages=${ELASTIC_APP_PACKAGES}
