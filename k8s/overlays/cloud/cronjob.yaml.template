@@ -33,8 +33,7 @@ spec:
                           -Delastic.apm.service_name=${APP_NAME}
                           -Delastic.apm.enabled=${COLLECT_APM}
                           -Delastic.apm.environment=${K8S_NAMESPACE}
-                          -XX:+UseParallelGC -XX:MaxRAMPercentage=75
-                          -Xmx3024m -Xms2024m -XX:MaxPermSize=512m"
+                          -XX:+UseParallelGC -XX:MaxRAMPercentage=75"
               resources:
                 requests:
                   memory: "${FLUSH_LOGS_MEMORY_REQUEST}M"
