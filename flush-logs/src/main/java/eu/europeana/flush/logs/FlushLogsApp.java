@@ -50,7 +50,7 @@ public class FlushLogsApp implements CommandLineRunner {
             String url = flushLogsSettings.getServer() + file + ".zip";
             LOG.info("Url {}", url);
             String content = readZipFileFromRemote(url);
-            System.out.println(content);
+          //  System.out.println(content);
         });
     }
 
@@ -67,10 +67,16 @@ public class FlushLogsApp implements CommandLineRunner {
                 byte[] buffer = new byte[1024];
                 ZipEntry entry;
                 while ((entry = stream.getNextEntry()) != null) {
-                    int read;
-                    while ((read = stream.read(buffer, 0, 1024)) >= 0) {
-                        sb.append(new String(buffer, 0, read));
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+                    String nextLine;
+                    while ((nextLine = reader.readLine()) != null) {
+                        System.out.println(nextLine);
                     }
+//                    int read;
+//                    while ((read = stream.read(buffer, 0, 1024)) >= 0) {
+//                       System.out.println(new String(buffer, 0, read));
+//                      //  sb.append(new String(buffer, 0, read));
+//                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -87,4 +93,30 @@ public class FlushLogsApp implements CommandLineRunner {
         }
         return null;
     }
+
+//    public static void print(Path p) {
+//        LOG.info( "{}", p);
+//        // TODO remove later only for testing purpose, later change to .zip extension
+//        try (ZipFile zipFile = new ZipFile(p.toString())) {
+//            int numberOfFiles = 0;
+//            Enumeration<? extends ZipEntry> entries = zipFile.entries();
+//            while (entries.hasMoreElements()) {
+//                numberOfFiles++;
+//                ZipEntry entry = entries.nextElement();
+//                InputStream stream = zipFile.getInputStream(entry);
+//                BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+//                String nextLine;
+//                while ((nextLine = reader.readLine()) != null) {
+//                    System.out.println(nextLine);
+//                }
+//                stream.close();
+//                reader.close();
+//            }
+//            LOG.info("Flushed {} number of files for {}", numberOfFiles, StringUtils.substringAfterLast(zipFile.getName(), "/"));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//}
+
 }
